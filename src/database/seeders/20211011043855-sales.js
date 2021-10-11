@@ -2,23 +2,31 @@
 
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
-		await queryInterface.createTable('Sellers', {
+		await queryInterface.createTable('Sales', {
 			id: {
 				type: Sequelize.INTEGER,
 				primaryKey: true,
 				autoIncrement: true,
 				allowNull: false,
 			},
-			name: {
+			sellerId: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				references: { model: 'Sellers', key: 'id' },
+				onUpdate: 'RESTRICT',
+				onDelete: 'RESTRICT',
+			},
+			saleDate: {
+				type: Sequelize.DATE,
+				allowNull: false,
+				defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+			},
+			description: {
 				type: Sequelize.STRING,
 				allowNull: false,
 			},
-			email: {
-				type: Sequelize.STRING,
-				allowNull: false,
-			},
-			password: {
-				type: Sequelize.STRING,
+			value: {
+				type: Sequelize.FLOAT,
 				allowNull: false,
 			},
 			createdAt: {
@@ -37,6 +45,6 @@ module.exports = {
 	},
 
 	down: async (queryInterface, Sequelize) => {
-		await queryInterface.dropTable('Sellers');
+		await queryInterface.dropTable('Sales');
 	},
 };
